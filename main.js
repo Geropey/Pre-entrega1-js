@@ -4,15 +4,28 @@ let number = 0;
 // Array para almacenar los resultados de la tabla de multiplicar
 let resultados = [];
 
-// Función para capturar entrada mediante prompt()
-function pedirNumero() {
-  let userInput = prompt("Ingresa un número mayor a cero:");
+// Capturamos el formulario y evitamos que se envíe por defecto
+const numeroForm = document.getElementById("numero-form");
+numeroForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+  pedirNumero();
+});
 
-  // Verificamos si el usuario ingresó un número válido
-  if (userInput === null || userInput.trim() === "" || isNaN(userInput) || parseInt(userInput) <= 0) {
+// Capturamos el botón de "Generar Tabla"
+const btnGenerarTabla = document.getElementById("btn-generar-tabla");
+btnGenerarTabla.addEventListener("click", generarTabla);
+
+// Capturamos el botón de "Mostrar Resultados"
+const btnMostrarResultados = document.getElementById("btn-mostrar-resultados");
+btnMostrarResultados.addEventListener("click", mostrarResultados);
+
+// Función para capturar entrada mediante formulario
+function pedirNumero() {
+  let userInput = document.getElementById("numero-input").value;
+
+  if (userInput.trim() === "" || isNaN(userInput) || parseInt(userInput) <= 0) {
     alert("Por favor, ingresa un número válido mayor a cero.");
   } else {
-    // Convertimos el valor ingresado a un número entero y lo almacenamos en la variable "number"
     number = parseInt(userInput);
     console.log("Número ingresado: " + number);
   }
@@ -20,12 +33,10 @@ function pedirNumero() {
 
 // Función para generar la tabla de multiplicar y agregarla al array "resultados"
 function generarTabla() {
-  // Validamos que se haya ingresado un número mayor a cero
   if (number > 0) {
     let tabla = document.getElementById("tabla");
     let html = "<table>";
 
-    // Generamos la tabla de multiplicar y la agregamos al array "resultados"
     let tablaResultado = [];
     for (let i = 1; i <= 20; i++) {
       tablaResultado.push(number * i);
@@ -33,34 +44,44 @@ function generarTabla() {
     }
     html += "</table>";
 
-    tabla.innerHTML = html; // Mostramos la tabla generada en el elemento con id "tabla"
+    tabla.innerHTML = html;
 
-    resultados.push(tablaResultado); // Agregamos la tabla de resultados al array "resultados"
+    resultados.push(tablaResultado);
 
-    console.log("Tabla generada y almacenada en el array resultados"); // Mostramos un mensaje en la consola como notificación de resultados
+    // Almacenar resultados en localStorage
+    localStorage.setItem("resultados", JSON.stringify(resultados));
+
+    console.log("Tabla generada y almacenada en el array resultados");
   } else {
     alert("Por favor, ingresa un número válido mayor a cero antes de generar la tabla.");
   }
 }
 
-// Función adicional para mostrar los resultados almacenados en el array mediante alert()
+// Función para mostrar los resultados almacenados en el div "resultados"
 function mostrarResultados() {
-  if (resultados.length === 0) {
-    alert("No hay resultados almacenados en el array.");
-  } else {
-    let mensaje = "Resultados almacenados en el array:\n";
-    
-    // Filtrar solo los resultados mayores o iguales a 50
-    const resultadosFiltrados = resultados.filter(resultado => resultado.every(valor => valor >= 50));
+  let resultadosDiv = document.getElementById("resultados");
 
-    if (resultadosFiltrados.length === 0) {
-      mensaje += "No hay resultados mayores o iguales a 50 en el array.";
+  // Recuperar resultados desde localStorage
+  const storedResultados = JSON.parse(localStorage.getItem("resultados"));
+
+  if (storedResultados === null || storedResultados.length === 0) {
+    resultadosDiv.innerHTML = "<p>No hay resultados almacenados en el array.</p>";
+  } else {
+    let html = "<p>Resultados almacenados en el array:</p><ul>";
+
+    const resultadosFiltrados = storedResultados.map(resultado => resultado.filter(valor => valor >= 50));
+
+    const resultadosValidos = resultadosFiltrados.filter(resultado => resultado.length > 0);
+
+    if (resultadosValidos.length === 0) {
+      html += "<li>No hay resultados mayores o iguales a 50 en el array.</li>";
     } else {
-      for (let i = 0; i < resultadosFiltrados.length; i++) {
-        mensaje += "Tabla " + (i + 1) + ": " + resultadosFiltrados[i].join(", ") + "\n";
+      for (let i = 0; i < resultadosValidos.length; i++) {
+        html += "<li>Tabla " + (i + 1) + ": " + resultadosValidos[i].join(", ") + "</li>";
       }
     }
 
-    alert(mensaje);
+    html += "</ul>";
+    resultadosDiv.innerHTML = html;
   }
 }

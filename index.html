@@ -8,14 +8,22 @@
 <body>
   <h1>Generador de tablas</h1>
   
-  <!-- Botón para capturar el número -->
-  <button onclick="pedirNumero()">Ingresar Número</button>
+  <!-- Formulario para capturar el número -->
+  <form id="numero-form">
+    <label for="numero-input">Ingresa un número mayor a cero:</label>
+    <input type="number" id="numero-input" min="1" required>
+    <button type="submit">Ingresar Número</button>
+  </form>
+
   <!-- Botón para generar la tabla -->
-  <button onclick="generarTabla()">Generar Tabla</button>
+  <button id="btn-generar-tabla">Generar Tabla</button>
   
   <div id="tabla"></div>
+  
+  <div id="resultados"></div>
+  
+  <button id="btn-mostrar-resultados">Mostrar Resultados</button>
   
   <script src="main.js"></script>
 </body>
 </html>
-
