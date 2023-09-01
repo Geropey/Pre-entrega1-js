@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Tablas</title>
+  <title>Generador de Operaciones</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <h1>Generador de tablas</h1>
+  <h1>Generador de operaciones</h1>
   
   <!-- Formulario para capturar el número -->
   <form id="numero-form">
@@ -15,14 +16,17 @@
     <button type="submit">Ingresar Número</button>
   </form>
 
-  <!-- Botón para generar la tabla -->
-  <button id="btn-generar-tabla">Generar Tabla</button>
+  <!-- Botones para generar la operación -->
+  <button id="btn-generar-multiplicacion">Generar Multiplicación</button>
+  <button id="btn-generar-division">Generar División</button>
   
   <div id="tabla"></div>
   
   <div id="resultados"></div>
   
   <button id="btn-mostrar-resultados">Mostrar Resultados</button>
+  
+  <button id="btn-cargar-datos">Cargar Datos Estáticos</button>
   
   <script src="main.js"></script>
 </body>
